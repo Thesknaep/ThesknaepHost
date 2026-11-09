@@ -1,0 +1,4 @@
+# Se genera en cada PC con la ruta de la carpeta (ThesknaepHost.bat lo crea)
+ThesknaepHost.vbs
+*.log
+credenciales.txt

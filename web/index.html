@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ThesknaepHost</title>
+<link rel="icon" type="image/png" href="icono.png">
+<style>
+:root{
+  --bg:#090410; --bg2:#1e0626; --panel:#14081e; --panel2:#220b30; --pink:#ff2e97; --pinks:#ff8cd2; --mag:#aa1ea0;
+  --cyan:#00e5ff; --text:#faebff; --dim:#9670aa; --green:#3cffaf; --red:#ff466e; --amber:#ffcd5a;
+  --tech:"Bahnschrift","Segoe UI","Ubuntu","Cantarell",system-ui,sans-serif;
+  --mono:"Consolas","DejaVu Sans Mono","Ubuntu Mono",monospace;
+  --corte:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:var(--tech)}
+body{background:linear-gradient(160deg,var(--bg2),var(--bg) 55%);background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(255,46,151,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,46,151,.05) 1px,transparent 1px);background-size:28px 28px}
+body::after{content:"";position:fixed;left:0;right:0;height:80px;top:-80px;pointer-events:none;z-index:0;
+  background:linear-gradient(transparent,rgba(255,46,151,.10),transparent);animation:scan 9s linear infinite}
+@keyframes scan{to{transform:translateY(calc(100vh + 160px))}}
+@media (prefers-reduced-motion:reduce){body::after{animation:none;display:none}}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:22px 24px 60px}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;border-bottom:2px solid;border-image:linear-gradient(90deg,var(--pink),transparent) 1;padding-bottom:14px;margin-bottom:22px;flex-wrap:wrap}
+h1{margin:0;font-size:46px;letter-spacing:1px;color:var(--pinks);text-shadow:0 0 6px var(--pink),0 0 18px rgba(255,46,151,.6),0 0 34px rgba(255,46,151,.35)}
+.sub{font-family:var(--mono);color:var(--cyan);font-size:12px;margin-top:4px}
+.badge{font-family:var(--mono);font-size:12px;padding:6px 12px;border:1px solid var(--cyan);color:var(--cyan);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.badge.rem{border-color:var(--pink);color:var(--pinks)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:900px){.grid{grid-template-columns:1fr} h1{font-size:34px}}
+.card{position:relative;background:linear-gradient(180deg,rgba(34,11,48,.92),rgba(20,8,30,.92));padding:16px 18px 18px;
+  clip-path:polygon(var(--corte) 0,100% 0,100% calc(100% - var(--corte)),calc(100% - var(--corte)) 100%,0 100%,0 var(--corte));
+  border:1px solid rgba(255,46,151,.4)}
+.card::before{content:"";position:absolute;left:0;top:0;width:22px;height:22px;background:linear-gradient(135deg,var(--pink) 0 3px,transparent 3px)}
+.card h2{margin:0 0 12px;font-size:15px;color:var(--pinks);letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid;border-image:linear-gradient(90deg,rgba(255,46,151,.6),transparent) 1;padding-bottom:8px}
+.card h2 small{font-family:var(--mono);color:var(--cyan);font-size:11px;opacity:.75;font-weight:400}
+.full{grid-column:1/-1}
+.estado{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:700;margin:4px 0 12px}
+.punto{width:12px;height:12px;border-radius:50%;background:currentColor;box-shadow:0 0 0 0 currentColor;animation:late 1.6s infinite;flex:none}
+@keyframes late{0%{box-shadow:0 0 0 0 currentColor}70%{box-shadow:0 0 0 12px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.lineas{font-family:var(--mono);font-size:13px;color:var(--pinks);line-height:1.75;white-space:pre-wrap;word-break:break-word}
+.lineas b{color:var(--dim);font-weight:400;display:inline-block;min-width:110px}
+.verde{color:var(--green)}.rojo{color:var(--red)}.ambar{color:var(--amber)}.cian{color:var(--cyan)}.tenue{color:var(--dim)}
+button,.btn{font-family:var(--tech);font-weight:700;font-size:13px;letter-spacing:.4px;color:var(--text);cursor:pointer;
+  background:rgba(255,46,151,.08);border:1.4px solid var(--pink);padding:10px 16px;transition:background .15s,box-shadow .15s,transform .05s;
+  clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)}
+button:hover{background:rgba(255,46,151,.22);box-shadow:0 0 14px rgba(255,46,151,.45)}
+button:active{transform:translateY(1px)}
+button.lleno{background:linear-gradient(90deg,var(--pink),var(--mag));border-color:var(--pink);color:#fff}
+button.cian{border-color:var(--cyan);background:rgba(0,229,255,.07)} button.cian:hover{background:rgba(0,229,255,.2);box-shadow:0 0 14px rgba(0,229,255,.4)}
+button.rojo{border-color:var(--red);background:rgba(255,70,110,.08)} button.verde{border-color:var(--green);background:rgba(60,255,175,.08)}
+button.ambar{border-color:var(--amber);background:rgba(255,205,90,.07)}
+button:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+button{white-space:nowrap}.interr span:first-child{white-space:normal;text-align:left}
+.fila{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.servidores{display:flex;flex-direction:column;gap:12px}
+.srv{display:grid;grid-template-columns:34px 1.2fr 1fr 1.1fr auto;gap:14px;align-items:center;padding:12px 14px;
+  background:rgba(9,4,16,.55);border:1px solid rgba(255,46,151,.25);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+@media (max-width:900px){.srv{grid-template-columns:34px 1fr;}.srv .uso,.srv .acc{grid-column:1/-1}}
+.srv .nom{font-size:17px;font-weight:700}.srv .tipo{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.srv .est{font-weight:700;font-size:15px}.srv .uso{font-family:var(--mono);font-size:12px;color:var(--cyan);line-height:1.6}
+.srv .acc{display:grid;grid-template-columns:repeat(3,auto);gap:6px}.srv .acc button{padding:7px 10px;font-size:11.5px}
+.vacio{color:var(--dim);text-align:center;padding:24px}
+.aviso{margin-bottom:18px;padding:12px 16px;border:1px solid var(--red);background:rgba(255,70,110,.1);color:#ffd7e1;font-size:14px;
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.aviso code,.paso code{font-family:var(--mono);background:rgba(0,0,0,.35);padding:2px 6px;color:var(--cyan)}
+/* modales */
+.velo{position:fixed;inset:0;background:rgba(5,2,10,.78);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;z-index:20;overflow:auto;padding:30px 12px}
+.velo.on{display:flex}
+.modal{width:min(1100px,100%);background:linear-gradient(180deg,#220b30,#120619);border:1px solid var(--pink);padding:20px 22px;position:relative;
+  clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px);box-shadow:0 0 40px rgba(255,46,151,.25)}
+.modal.chico{width:min(560px,100%)}
+.modal h3{margin:0 0 4px;font-size:34px;color:var(--pinks);text-shadow:0 0 8px var(--pink),0 0 22px rgba(255,46,151,.5)}
+.modal .sub{margin-bottom:16px}
+.cerrar{position:absolute;right:16px;top:16px;padding:6px 12px;border-color:var(--red)}
+.cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media (max-width:900px){.cols{grid-template-columns:1fr}}
+.campo{margin-bottom:12px}
+.campo label,.etq{display:block;font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.5px;margin-bottom:6px}
+input[type=text],select{width:100%;background:#20092e;border:1px solid rgba(255,140,210,.45);color:var(--text);padding:9px 10px;font-family:var(--tech);font-size:14px;outline:none}
+input[type=text]:focus,select:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,229,255,.2)}
+.grupo{display:grid;gap:6px}.grupo button{padding:9px 6px;font-size:12px}
+.grupo button.sel{background:linear-gradient(90deg,var(--pink),var(--mag));color:#fff}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.valor{float:right;color:var(--pink);font-size:16px;font-weight:700;margin-top:-4px}
+.slider{position:relative;padding-bottom:20px}
+.slider input[type=range]{width:100%;accent-color:var(--pink);height:22px;margin:0}
+.ticks{position:relative;height:16px;font-family:var(--tech);font-size:10.5px;color:var(--dim)}
+.ticks span{position:absolute;transform:translateX(-50%);top:2px}.ticks span.act{color:var(--pink);font-weight:700}
+.interr{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:6px;border-color:var(--cyan);background:rgba(0,229,255,.05)}
+.interr.on{background:linear-gradient(90deg,rgba(0,229,255,.75),rgba(170,30,160,.8));color:#fff}
+.resumen{font-family:var(--mono);font-size:12.5px;color:var(--cyan);white-space:pre;line-height:1.55;background:rgba(0,0,0,.25);padding:10px}
+.nota{font-size:12px;color:var(--amber);margin-top:6px}.nota.tenue{color:var(--dim)}
+.pie{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.paso{margin:10px 0;line-height:1.6}
+.aviso.act{border-color:var(--cyan);background:rgba(0,229,255,.08);color:var(--text)}.aviso.act b{color:var(--cyan)}
+.ayTabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 12px}.ayTabs button.on{background:linear-gradient(90deg,var(--pink),var(--mag));color:#fff}
+.ayCuerpo{max-height:60vh;overflow:auto;padding:4px 14px 4px 2px;border-top:1px solid rgba(255,46,151,.35)}
+.ayCuerpo h4{margin:16px 0 4px;color:var(--pink);font-size:15px}.ayCuerpo p{margin:0;line-height:1.55;font-size:14px}.ayCuerpo .grp{margin:18px 0 0;color:var(--cyan);font-family:var(--mono);font-size:13px}
+.toasts{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:10px;z-index:40}
+.toast{width:340px;padding:12px 16px 14px;background:linear-gradient(180deg,#220b30,#0e0517);border:1px solid var(--pink);border-left:4px solid var(--pink);
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);animation:entra .25s ease-out}
+.toast b{display:block;color:var(--pinks);margin-bottom:4px}.toast span{font-size:13px}
+@keyframes entra{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+a{color:var(--cyan)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>THESKNAEPHOST</h1>
+      <div class="sub" id="sub">// GAME SERVER CONTROL :: PTERODACTYL CORE :: TERRARIA / MINECRAFT</div>
+    </div>
+    <div class="fila"><span id="modoBadge" class="badge">MODO: —</span><button class="cian" onclick="abrirModo()">CAMBIAR MODO</button><button class="cian" onclick="abrirAyuda()">? AYUDA</button></div>
+  </header>
+
+  <div id="avisoTs" class="aviso" hidden></div>
+  <div id="avisoAct" class="aviso act" hidden></div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>▸ SISTEMA <small>SYS.01</small></h2>
+      <div id="sisEstado" class="estado tenue"><span class="punto"></span><span>LEYENDO…</span></div>
+      <div id="sisLineas" class="lineas"></div>
+      <div class="fila" style="margin-top:14px">
+        <button class="cian" onclick="window.open(sistema.panelUrl || 'http://127.0.0.1:8088')">PANEL WEB</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>▸ ACCESO REMOTO <small>TAILSCALE</small></h2>
+      <div id="tsEstado" class="estado tenue"><span class="punto"></span><span>LEYENDO…</span></div>
+      <div id="tsLineas" class="lineas"></div>
+      <div class="fila" style="margin-top:14px">
+        <button class="cian" onclick="window.open('https://login.tailscale.com/admin/machines')">ADMINISTRAR (WEB)</button>
+        <button onclick="guiaAmigos()">CÓMO SE CONECTAN</button>
+      </div>
+    </section>
+
+    <section class="card full">
+      <h2>▸ MIS SERVIDORES <small id="pieServ">—</small></h2>
+      <div class="fila" style="margin-bottom:12px"><button class="lleno" onclick="abrirCrear()">+ CREAR SERVIDOR</button>
+        <span class="tenue" style="font-size:12px">Los servidores empiezan apagados: préndelos aquí. Se actualiza cada 5 segundos.</span></div>
+      <div id="servidores" class="servidores"><div class="vacio">Cargando…</div></div>
+    </section>
+  </div>
+</div>
+
+<!-- MODO DE USO -->
+<div class="velo" id="veloModo"><div class="modal chico">
+  <h3>MODO DE USO</h3><div class="sub">// ¿DÓNDE VAN A JUGAR?</div>
+  <div class="paso"><button class="lleno" style="width:100%;text-align:left" onclick="elegirModo('local')">LOCAL · solo en mi red (mismo WiFi o cable)</button></div>
+  <div class="paso"><button class="cian" style="width:100%;text-align:left" onclick="elegirModo('remoto')">REMOTO · desde cualquier lugar (datos móviles, otras casas)</button></div>
+  <div class="nota tenue">El modo REMOTO necesita <b>Tailscale</b> (gratis): crea una red privada entre este equipo y los de tus amigos. Funciona aunque tu internet tenga CGNAT. Sin Tailscale, el modo REMOTO no funciona.</div>
+  <div id="modoPasos"></div>
+</div></div>
+
+<!-- CREAR SERVIDOR -->
+<div class="velo" id="veloCrear"><div class="modal">
+  <button class="cerrar" onclick="cerrar('veloCrear')">✕</button>
+  <h3>NUEVO SERVIDOR</h3><div class="sub">// ELIGE EL JUEGO :: TIPO, VERSIÓN, MUNDO Y EXTRAS</div>
+  <div class="cols">
+    <div>
+      <div class="etq">JUEGO</div><div class="grupo g2" id="gJuego"></div>
+      <div class="etq" style="margin-top:12px">TIPO</div><div class="grupo" id="gTipo"></div>
+      <div id="tipoInfo" class="nota tenue" style="min-height:48px"></div>
+      <div class="campo"><label>VERSIÓN · si juegan desde celular (Terraria), elige la del celular</label><select id="selVersion"><option>Cargando…</option></select></div>
+      <div class="etq">EXTRAS</div>
+      <button class="interr on" id="swBackup" onclick="interr(this)"><span>BACKUPS AUTOMÁTICOS (cada 6 h, guarda 3)</span><span>ON</span></button>
+      <button class="interr" id="swApi" onclick="interr(this)"><span>ACCESO API</span><span>OFF</span></button>
+      <button class="interr" id="swSlots" onclick="interr(this);slotsMax()"><span>SLOTS AL MÁXIMO</span><span>OFF</span></button>
+      <div class="nota tenue">SIN ANUNCIOS: incluido · SOPORTE: el host eres tú · ANTI-DDOS: no en un PC de casa · FAST DL: no aplica</div>
+    </div>
+    <div>
+      <div class="campo"><label>NOMBRE DEL MUNDO (letras y números)</label><input type="text" id="tMundo" value="MiMundo" maxlength="32" oninput="resumen()"></div>
+      <div class="campo"><label>SEMILLA (en blanco = al azar)</label><div class="fila" style="flex-wrap:nowrap"><input type="text" id="tSemilla" maxlength="32" oninput="resumen()"><button class="lleno cian" onclick="semillaAzar()">AL AZAR</button></div></div>
+      <div id="opTerraria">
+        <div class="etq">TAMAÑO DEL MAPA</div><div class="grupo g3" id="gTam"></div>
+        <div class="etq" style="margin-top:10px">DIFICULTAD</div><div class="grupo g4" id="gDif"></div>
+        <div class="etq" style="margin-top:10px">MALDAD DEL MUNDO</div><div class="grupo g3" id="gMal"></div>
+        <div id="malNota" class="nota"></div>
+      </div>
+      <div id="opMinecraft" hidden>
+        <div class="etq">MODO DE JUEGO</div><div class="grupo g2" id="gModo"></div>
+        <div class="etq" style="margin-top:10px">DIFICULTAD</div><div class="grupo g4" id="gDifMc"></div>
+        <div class="etq" style="margin-top:10px">TIPO DE MUNDO</div><div class="grupo g2" id="gTer"></div>
+      </div>
+      <div class="etq" style="margin-top:12px">SE CREARÁ ASÍ</div><div class="resumen" id="resumen"></div>
+    </div>
+    <div>
+      <div class="campo"><label>NOMBRE DEL SERVIDOR</label><input type="text" id="tNombre" value="Mi Terraria" maxlength="40"></div>
+      <div class="campo" id="campoClave"><label>CONTRASEÑA (opcional)</label><input type="text" id="tClave" maxlength="20"></div>
+      <div id="campoMc" hidden>
+        <button class="interr on" id="swPvp" onclick="interr(this)"><span>PVP (jugadores se pueden atacar)</span><span>ON</span></button>
+      </div>
+      <div class="campo"><label>JUGADORES <span class="valor" id="vJug"></span></label><div class="slider" id="sJug"></div></div>
+      <div class="campo"><label>MEMORIA RAM (GB) <span class="valor" id="vRam"></span></label><div class="slider" id="sRam"></div></div>
+      <div class="campo"><label>ALMACENAMIENTO (GB) <span class="valor cian" id="vDisco"></span></label><div class="slider" id="sDisco"></div></div>
+      <div id="eulaBox" hidden>
+        <button class="interr" id="swEula" onclick="interr(this)"><span>ACEPTO EL EULA DE MINECRAFT</span><span>OFF</span></button>
+        <div class="nota tenue">Léelo en <a href="https://www.minecraft.net/eula" target="_blank">minecraft.net/eula</a>. Solo Minecraft Java (PC): Bedrock/celular no puede entrar.</div>
+      </div>
+    </div>
+  </div>
+  <div class="pie"><button onclick="cerrar('veloCrear')">CANCELAR</button><button class="lleno" id="btnCrear" onclick="crear()">+ CREAR SERVIDOR</button></div>
+</div></div>
+
+<!-- RECURSOS DE UN SERVIDOR -->
+<div class="velo" id="veloRec"><div class="modal chico">
+  <button class="cerrar" onclick="cerrar('veloRec')">✕</button>
+  <h3>RECURSOS</h3><div class="sub" id="recSub">//</div>
+  <div class="campo"><label>MEMORIA RAM (GB) <span class="valor" id="vRam2"></span></label><div class="slider" id="sRam2"></div></div>
+  <div class="campo"><label>ALMACENAMIENTO (GB) <span class="valor cian" id="vDisco2"></span></label><div class="slider" id="sDisco2"></div></div>
+  <div class="nota tenue">Se aplica al momento. Si el juego no lo nota, reinicia el servidor.</div>
+  <div class="pie"><button onclick="cerrar('veloRec')">CANCELAR</button><button class="lleno" onclick="aplicarRecursos()">APLICAR</button></div>
+</div></div>
+
+<!-- AYUDA -->
+<div class="velo" id="veloAyuda"><div class="modal">
+  <button class="cerrar" onclick="cerrar('veloAyuda')">✕</button>
+  <h3>AYUDA</h3><div class="sub">// MODO DE USO :: REGLAS :: ERRORES Y SOLUCIONES :: SOPORTE</div>
+  <div class="ayTabs" id="ayTabs"></div>
+  <div class="ayCuerpo" id="ayCuerpo">Cargando…</div>
+  <div class="pie"><button class="lleno" id="aySoporte">ABRIR SOPORTE (GITHUB)</button><button onclick="cerrar('veloAyuda')">CERRAR</button></div>
+</div></div>
+
+<!-- AVISO GENERICO -->
+<div class="velo" id="veloAviso"><div class="modal chico">
+  <h3 id="avTitulo">AVISO</h3><div class="sub">// THESKNAEPHOST</div>
+  <div id="avTexto" style="line-height:1.6;white-space:pre-wrap"></div>
+  <div class="pie" id="avBotones"></div>
+</div></div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+let sistema = {}, servidores = [], ocupado = false, recId = null;
+
+// ------------------------------------------------------------ utilidades
+async function api(a, cuerpo, extra = "") {
+  // la cabecera X-ThesknaepHost demuestra que la orden viene de esta interfaz (otras paginas no pueden enviarla)
+  const h = { "X-ThesknaepHost": "1" };
+  const r = await fetch("api.php?a=" + a + extra, cuerpo ? { method: "POST", headers: { ...h, "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) } : { headers: h });
+  return r.json();
+}
+function toast(titulo, texto, color = "var(--pink)", ms = 4500) {
+  const t = document.createElement("div"); t.className = "toast"; t.style.borderLeftColor = color;
+  t.innerHTML = "<b></b><span></span>"; t.querySelector("b").textContent = titulo; t.querySelector("span").textContent = texto;
+  $("toasts").appendChild(t); setTimeout(() => t.remove(), ms);
+}
+function abrir(id) { $(id).classList.add("on"); } function cerrar(id) { $(id).classList.remove("on"); }
+function aviso(titulo, texto, botones = [["ACEPTAR", null, true]]) {
+  $("avTitulo").textContent = titulo; $("avTexto").textContent = texto; const b = $("avBotones"); b.innerHTML = "";
+  botones.forEach(([t, fn, lleno]) => { const x = document.createElement("button"); x.textContent = t; if (lleno) x.className = "lleno"; x.onclick = () => { cerrar("veloAviso"); fn && fn(); }; b.appendChild(x); });
+  abrir("veloAviso");
+}
+const preguntar = (titulo, texto, si) => new Promise(ok => aviso(titulo, texto, [["CANCELAR", () => ok(false)], [si, () => ok(true), true]]));
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+// Deslizador con numeros debajo (1, 2, 3, 4... o de 5 en 5, etc. segun el espacio)
+function slider(cont, min, max, valor, div, onChange) {
+  const el = typeof cont === "string" ? $(cont) : cont;
+  el.innerHTML = '<input type="range"><div class="ticks"></div>';
+  const inp = el.querySelector("input"), tk = el.querySelector(".ticks");
+  inp.min = min; inp.max = max; inp.step = 1; inp.value = Math.min(max, Math.max(min, valor));
+  const pintar = () => {
+    tk.innerHTML = ""; const dmin = min / div, dmax = max / div, rango = dmax - dmin, px = el.clientWidth || 300;
+    let paso = 1000; for (const n of [1, 2, 5, 10, 20, 25, 50, 100]) if (rango / n * 30 <= px) { paso = n; break; }
+    // Prioridad: el valor elegido (siempre, bajo el control), luego minimo y maximo, luego numeros redondos.
+    // Un numero que choca con otro ya puesto no se muestra.
+    const act = inp.value / div;
+    const marcas = [act, dmin, dmax]; for (let m = Math.ceil(dmin / paso - 1e-9) * paso; m < dmax - 1e-9; m += paso) if (m > dmin + 1e-9) marcas.push(m);
+    const ocupado = [];
+    marcas.forEach((m, i) => { if (i > 0 && Math.abs(m - act) < 1e-6) return;
+      const x = rango ? (m - dmin) / rango * 100 : 0, xpx = x * px / 100 + (0.5 - x / 100) * 14;
+      const txt = Number.isInteger(m) ? String(m) : m.toFixed(1).replace(".", ","), ancho = txt.length * 7 + (i === 0 ? 14 : 8);
+      if (ocupado.some(o => Math.abs(o.x - xpx) < (o.a + ancho) / 2)) return; ocupado.push({ x: xpx, a: ancho });
+      const s = document.createElement("span"); s.style.left = `calc(${x}% + ${(0.5 - x / 100) * 14}px)`; s.textContent = txt;
+      if (i === 0) s.className = "act"; tk.appendChild(s); });
+    onChange && onChange(+inp.value);
+  };
+  inp.oninput = pintar; requestAnimationFrame(pintar);
+  return { get: () => +inp.value, set: v => { inp.value = v; pintar(); }, max: m => { if (m !== undefined) { max = m; inp.max = m; pintar(); } return max; }, el: inp };
+}
+function grupo(id, opciones, inicial, onChange) {
+  const g = $(id); g.innerHTML = ""; g.dataset.sel = inicial;
+  opciones.forEach((t, i) => { const b = document.createElement("button"); b.textContent = t; if (i === inicial) b.className = "sel";
+    b.onclick = () => { elegir(id, i); onChange && onChange(i); }; g.appendChild(b); });
+}
+function elegir(id, i) { const g = $(id); g.dataset.sel = i; [...g.children].forEach((b, k) => b.classList.toggle("sel", k === i)); }
+const sel = id => +$(id).dataset.sel;
+function interr(b) { const on = !b.classList.contains("on"); b.classList.toggle("on", on); b.lastElementChild.textContent = on ? "ON" : "OFF"; }
+const activo = id => $(id).classList.contains("on");
+
+// ------------------------------------------------------------ estado
+const NOMBRE_TIPO = { vanilla: "TERRARIA VANILLA", tshock: "TERRARIA TSHOCK", tmodloader: "TERRARIA TMODLOADER", "mc-vanilla": "MINECRAFT VANILLA", "mc-paper": "MINECRAFT PAPER", "mc-forge": "MINECRAFT FORGE" };
+const ESTADOS = { running: ["EN LÍNEA", "verde"], starting: ["ARRANCANDO…", "ambar"], stopping: ["APAGANDO…", "ambar"], offline: ["APAGADO", "rojo"],
+  instalando: ["INSTALANDO…", "cian"], error_instalacion: ["ERROR AL INSTALAR", "rojo"], suspendido: ["SUSPENDIDO", "tenue"], sin_conexion: ["SIN CONEXIÓN", "tenue"] };
+function direccion(s) {
+  const ts = sistema.tailscale || {};
+  if (sistema.modo === "remoto" && ts.estado === "Running" && ts.ip) return ts.ip + ":" + s.port;
+  return (sistema.ips && sistema.ips[0] ? sistema.ips[0] : "127.0.0.1") + ":" + s.port;
+}
+
+async function refrescar() {
+  if (ocupado) return; ocupado = true;
+  try { const [si, sv] = await Promise.all([api("sistema"), api("servidores")]); sistema = si; if (sv.ok) servidores = sv.servers || []; pintar(sv.ok ? null : sv.error); }
+  catch (e) { $("sisEstado").className = "estado rojo"; $("sisEstado").lastElementChild.textContent = "SIN CONEXIÓN CON THESKNAEPHOST"; }
+  finally { ocupado = false; }
+}
+
+function pintar(errorServ) {
+  const sv = sistema.servicios || {}, todo = sistema.panel && sv.wings === "active" && sv.docker === "active";
+  $("sisEstado").className = "estado " + (todo ? "verde" : "ambar");
+  $("sisEstado").lastElementChild.textContent = todo ? "EN LÍNEA" : "REVISA LOS SERVICIOS";
+  const ok = v => v === "active" ? '<span class="verde">activo</span>' : `<span class="rojo">${esc(v)}</span>`;
+  const ts = sistema.tailscale || {};
+  $("sisLineas").innerHTML = `<b>PANEL</b>${sistema.panel ? '<span class="verde">en línea</span>' : '<span class="rojo">sin respuesta</span>'}\n<b>WINGS · DOCKER</b>${ok(sv.wings)} · ${ok(sv.docker)}\n` +
+    `<b>TU IP (LAN)</b>${esc((sistema.ips || []).join(", ") || "sin red")}\n<b>REMOTO</b>${ts.ip ? esc(ts.ip) + " (Tailscale)" : "sin Tailscale"}\n` +
+    `<b>EQUIPO</b>${Math.round((sistema.ramMB || 0) / 102.4) / 10} GB RAM · ${Math.floor((sistema.discoLibreMB || 0) / 1024)} GB libres · ${sistema.nucleos || "?"} núcleos`;
+
+  // modo y Tailscale
+  const modo = sistema.modo; $("modoBadge").textContent = "MODO: " + (modo ? modo.toUpperCase() : "SIN ELEGIR"); $("modoBadge").className = "badge" + (modo === "remoto" ? " rem" : "");
+  if (!modo && !$("veloModo").classList.contains("on")) abrirModo();
+  const tsOk = ts.estado === "Running";
+  const tsTxt = { Running: ["CONECTADO", "verde"], NeedsLogin: ["INICIA SESIÓN", "ambar"], Stopped: ["DESCONECTADO", "rojo"], NoInstalado: ["NO INSTALADO", "ambar"], NeedsMachineAuth: ["FALTA APROBAR ESTE EQUIPO", "ambar"] }[ts.estado] || [String(ts.estado || "—").toUpperCase(), "tenue"];
+  $("tsEstado").className = "estado " + tsTxt[1]; $("tsEstado").lastElementChild.textContent = tsTxt[0];
+  const enLinea = (ts.equipos || []).filter(e => e.linea);
+  $("tsLineas").innerHTML = tsOk ? `<b>IP DE ESTE EQUIPO</b>${esc(ts.ip)}\n<b>NOMBRE</b>${esc(ts.nombre)}\n<b>DISPOSITIVOS</b>${(ts.equipos || []).length} en tu red, ${enLinea.length} en línea${enLinea.length ? ": " + esc(enLinea.slice(0, 3).map(e => e.nombre).join(", ")) : ""}`
+    : `<span class="tenue">${modo === "remoto" ? "El modo REMOTO necesita Tailscale conectado." : "Solo hace falta si quieres jugar desde otros lugares (modo REMOTO)."}</span>`;
+  const av = $("avisoTs");
+  if (modo === "remoto" && !tsOk) {
+    av.hidden = false;
+    av.innerHTML = ts.estado === "NoInstalado"
+      ? `⚠ <b>Modo REMOTO sin Tailscale.</b> Instálalo en una terminal: <code>curl -fsSL https://tailscale.com/install.sh | sh</code> y luego <code>sudo tailscale up</code>. Hasta entonces solo funciona en tu red local.`
+      : `⚠ <b>Tailscale no está conectado</b> (${esc(tsTxt[0])}). En una terminal: <code>sudo tailscale up</code> e inicia sesión con el enlace que aparece.`;
+  } else av.hidden = true;
+
+  // servidores
+  const cont = $("servidores");
+  if (errorServ) { cont.innerHTML = `<div class="vacio">No se pudo leer los servidores: ${esc(errorServ)}</div>`; return; }
+  $("pieServ").textContent = `${servidores.length} SERVIDOR(ES) · ${servidores.filter(s => s.estado === "running").length} EN LÍNEA`;
+  if (!servidores.length) { cont.innerHTML = '<div class="vacio">No tienes servidores todavía. Pulsa + CREAR SERVIDOR.</div>'; return; }
+  cont.innerHTML = "";
+  for (const s of servidores) {
+    const [et, cl] = ESTADOS[s.estado] || [String(s.estado).toUpperCase(), "tenue"];
+    const listo = !["instalando", "error_instalacion", "suspendido", "sin_conexion"].includes(s.estado), on = ["running", "starting", "stopping"].includes(s.estado);
+    const cpu = sistema.nucleos ? Math.round(s.cpu / sistema.nucleos) : Math.round(s.cpu);
+    const d = document.createElement("div"); d.className = "srv";
+    d.innerHTML = `<span class="punto ${cl}"></span>
+      <div><div class="nom">${esc(s.name)}</div><div class="tipo">${esc(NOMBRE_TIPO[s.tipo] || s.egg)} · PUERTO ${s.port}</div></div>
+      <div class="est ${cl}">${et}<div class="tipo" style="margin-top:3px">${esc(direccion(s))}</div></div>
+      <div class="uso">RAM ${on ? (s.ram / 1024).toFixed(1) + " / " : ""}${(s.memory / 1024).toFixed(1)} GB<br>CPU ${on ? cpu + " % del equipo" : "-"}<br>DISCO ${(s.disco_usado / 1024).toFixed(1)} / ${(s.disk / 1024).toFixed(1)} GB</div>
+      <div class="acc"></div>`;
+    const acc = d.querySelector(".acc");
+    const btn = (t, c, fn, en = true) => { const b = document.createElement("button"); b.textContent = t; if (c) b.className = c; b.disabled = !en; b.onclick = fn; acc.appendChild(b); };
+    btn("PRENDER", "verde", () => power(s, "start"), listo && s.estado === "offline");
+    btn("APAGAR", "rojo", () => power(s, "stop"), listo && ["running", "starting"].includes(s.estado));
+    btn("REINICIAR", "ambar", () => power(s, "restart"), listo && s.estado === "running");
+    btn("RECURSOS", "", () => abrirRecursos(s));
+    btn("CONSOLA", "cian", () => window.open((sistema.panelUrl || "http://127.0.0.1:8088") + "/server/" + s.short));
+    btn("COPIAR IP", "cian", () => { navigator.clipboard.writeText(direccion(s)); toast("DIRECCIÓN COPIADA", direccion(s) + " · pégala en WhatsApp o Discord.", "var(--cyan)", 3500); });
+    cont.appendChild(d);
+  }
+}
+
+async function power(s, accion) {
+  const txt = { start: "Prendiendo", stop: "Apagando", restart: "Reiniciando" }[accion];
+  toast(txt.toUpperCase() + "…", s.name, "var(--amber)", 3000);
+  const r = await api("power", { id: s.id, accion });
+  if (!r.ok) aviso("ERROR", "No se pudo cambiar el estado del servidor:\n" + (r.error || "")); else setTimeout(refrescar, 1200);
+}
+
+// ------------------------------------------------------------ modo de uso
+function abrirModo() { $("modoPasos").innerHTML = ""; abrir("veloModo"); }
+async function elegirModo(modo) {
+  const r = await api("modo", { modo });
+  if (!r.ok) { aviso("ERROR", r.error || "No se pudo guardar el modo."); return; }
+  sistema.modo = modo;
+  const ts = sistema.tailscale || {};
+  if (modo === "remoto" && ts.estado !== "Running") {
+    $("modoPasos").innerHTML = `<div class="aviso" style="margin-top:14px">Tailscale es <b>obligatorio</b> para el modo REMOTO.<br><br>
+      ${ts.estado === "NoInstalado" ? `1. En una terminal: <code>curl -fsSL https://tailscale.com/install.sh | sh</code><br>2. ` : "1. "}<code>sudo tailscale up</code> y abre el enlace para iniciar sesión.<br>
+      ${ts.estado === "NoInstalado" ? "3" : "2"}. Pulsa <b>YA LO HICE</b>.</div><div class="pie"><button onclick="cerrar('veloModo')">MÁS TARDE</button><button class="lleno" onclick="revisarTs()">YA LO HICE</button></div>`;
+    return;
+  }
+  cerrar("veloModo"); toast("MODO " + modo.toUpperCase(), modo === "remoto" ? "Tus amigos entran con tu IP de Tailscale." : "Tus amigos entran con tu IP local (mismo WiFi).", "var(--cyan)");
+  refrescar();
+}
+async function revisarTs() {
+  sistema = await api("sistema");
+  if ((sistema.tailscale || {}).estado === "Running") { cerrar("veloModo"); toast("TAILSCALE CONECTADO", "IP " + sistema.tailscale.ip, "var(--green)"); refrescar(); }
+  else toast("TODAVÍA NO", "Tailscale aún no está conectado.", "var(--red)");
+}
+function guiaAmigos() {
+  aviso("CÓMO SE CONECTAN", "Lo que hace tu amigo (una sola vez):\n\n1. Instala Tailscale en su teléfono (Google Play / App Store) o PC (tailscale.com/download).\n2. Abre el enlace de invitación que le mandaste (en la web de Tailscale: tu equipo → ⋯ → Share…) e inicia sesión.\n3. Deja Tailscale conectado.\n\nPara jugar:\n• Terraria: Multijugador → Unirse por IP → la IP y el puerto que le copiaste.\n• Minecraft Java: Multijugador → Agregar servidor → IP:puerto.\n\nTu servidor tiene que estar PRENDIDO y este equipo encendido.");
+}
+
+// ------------------------------------------------------------ ayuda (texto en ayuda.json, el mismo que la app de Windows)
+let ayuda = null;
+async function abrirAyuda(id = "uso") {
+  abrir("veloAyuda");
+  if (!ayuda) {
+    try { ayuda = await (await fetch("ayuda.json", { cache: "no-store" })).json(); }
+    catch { $("ayCuerpo").textContent = "No se pudo cargar la ayuda. Revisa LEEME-LINUX.md."; return; }
+    $("aySoporte").onclick = () => window.open(ayuda.soporte, "_blank", "noopener");
+    $("ayTabs").innerHTML = "";
+    ayuda.secciones.forEach(s => {
+      const b = document.createElement("button"); b.textContent = s.titulo; b.dataset.id = s.id;
+      if (s.id === "errores") b.className = "ambar"; else if (s.id === "soporte") b.className = "cian";
+      b.onclick = () => verAyuda(s.id); $("ayTabs").appendChild(b);
+    });
+  }
+  verAyuda(id);
+}
+function verAyuda(id) {
+  const s = ayuda.secciones.find(x => x.id === id) || ayuda.secciones[0], c = $("ayCuerpo");
+  document.querySelectorAll("#ayTabs button").forEach(b => b.classList.toggle("on", b.dataset.id === s.id));
+  c.innerHTML = ""; let grupo = null;
+  // esta interfaz es la version de Linux: los errores solo de Windows no aplican
+  s.items.filter(it => !it.s || !it.s.startsWith("WINDOWS")).forEach(it => {
+    if (it.s && it.s !== grupo) { grupo = it.s; const g = document.createElement("div"); g.className = "grp"; g.textContent = "// " + grupo; c.appendChild(g); }
+    const h = document.createElement("h4"); h.textContent = it.t; const p = document.createElement("p"); p.textContent = it.l || it.d;
+    c.append(h, p);
+  });
+  if (s.id === "soporte") { const p = document.createElement("p"); p.className = "grp"; p.textContent = "SOPORTE :: " + ayuda.soporte; c.appendChild(p); }
+  c.scrollTop = 0;
+}
+
+// ------------------------------------------------------------ crear servidor
+const TIPOS = {
+  terraria: [["vanilla", "VANILLA :: ORIGINAL", 4, 5, "Terraria original, sin modificaciones. Lo más liviano."],
+             ["tshock", "TSHOCK :: PLUGINS", 4, 5, "Plugins (.dll), permisos, anti-cheat y comandos de admin. Entran con Terraria normal."],
+             ["tmodloader", "TMODLOADER :: MODS", 8, 5, "Mods (.tmod). Tus amigos necesitan tModLoader (Steam) y los mismos mods."]],
+  minecraft: [["mc-vanilla", "VANILLA :: ORIGINAL", 6, 8, "Minecraft Java oficial de Mojang. Entran con Minecraft Java normal."],
+              ["mc-paper", "PAPER :: PLUGINS", 8, 8, "Más rápido que Vanilla y acepta plugins (.jar)."],
+              ["mc-forge", "FORGE :: MODS", 12, 10, "Mods (.jar). Tus amigos necesitan Forge con los mismos mods."]]
+};
+const TAM = ["PEQUEÑO", "MEDIANO", "GRANDE"], DIF = [["VIAJE", 3], ["CLÁSICO", 0], ["EXPERTO", 1], ["MAESTRO", 2]], MAL = [["ALEATORIO", "random"], ["CORRUPCIÓN", "corrupt"], ["CARMESÍ", "crimson"]];
+const MODO_MC = [["SUPERVIVENCIA", "survival"], ["CREATIVO", "creative"], ["AVENTURA", "adventure"], ["HARDCORE", "hardcore"]];
+const DIF_MC = [["PACÍFICO", "peaceful"], ["FÁCIL", "easy"], ["NORMAL", "normal"], ["DIFÍCIL", "hard"]];
+const TER = [["NORMAL", "normal"], ["PLANO", "flat"], ["BIOMAS GRANDES", "large_biomes"], ["AMPLIFICADO", "amplified"]];
+let juego = "terraria", sJug, sRam, sDisco, versiones = {};
+
+function abrirCrear() {
+  abrir("veloCrear");
+  const maxRam = Math.max(4, Math.floor((sistema.ramMB || 8192) / 512)), maxDisco = Math.max(2, Math.floor((sistema.discoLibreMB || 10240) / 1024) - 5);
+  sJug = slider("sJug", 1, 255, 8, 1, v => { $("vJug").textContent = v >= +sJug?.el.max ? v + " · MÁXIMO" : v; resumen(); });
+  sRam = slider("sRam", 2, maxRam, 4, 2, v => $("vRam").textContent = (v / 2).toFixed(1).replace(".", ",") + " GB");
+  sDisco = slider("sDisco", 1, maxDisco, Math.min(5, maxDisco), 1, v => $("vDisco").textContent = v + " GB");
+  grupo("gJuego", ["TERRARIA", "MINECRAFT"], 0, i => cambiarJuego(i ? "minecraft" : "terraria"));
+  grupo("gTam", TAM, 1, resumen); grupo("gDif", DIF.map(x => x[0]), 1, resumen); grupo("gMal", MAL.map(x => x[0]), 0, resumen);
+  grupo("gModo", MODO_MC.map(x => x[0]), 0, i => { const hc = i === 3; if (hc) elegir("gDifMc", 3); [...$("gDifMc").children].forEach(b => b.disabled = hc); resumen(); });
+  grupo("gDifMc", DIF_MC.map(x => x[0]), 2, resumen); grupo("gTer", TER.map(x => x[0]), 0, resumen);
+  cambiarJuego("terraria");
+}
+function cambiarJuego(j) {
+  juego = j; const mc = j === "minecraft";
+  $("opTerraria").hidden = mc; $("opMinecraft").hidden = !mc; $("campoClave").hidden = mc; $("campoMc").hidden = !mc; $("eulaBox").hidden = !mc;
+  if (["Mi Terraria", "Mi Minecraft"].includes($("tNombre").value)) $("tNombre").value = mc ? "Mi Minecraft" : "Mi Terraria";
+  if (["MiMundo", "world"].includes($("tMundo").value)) $("tMundo").value = mc ? "world" : "MiMundo";
+  sJug.max(mc ? 100 : 255); sJug.set(mc ? 10 : 8);
+  grupo("gTipo", TIPOS[j].map(t => t[1]), 0, cambiarTipo); cambiarTipo(0);
+}
+function cambiarTipo(i) {
+  const t = TIPOS[juego][i]; $("tipoInfo").textContent = t[4];
+  sRam.set(Math.min(t[2], +sRam.el.max)); sDisco.set(Math.min(t[3], +sDisco.el.max));
+  if (juego === "terraria") {
+    const ts = t[0] === "tshock"; [...$("gMal").children].forEach(b => b.disabled = !ts); if (!ts) elegir("gMal", 0);
+    $("malNota").textContent = ts ? "" : "Vanilla/tModLoader no permiten elegir la maldad: sale al azar. Para elegirla usa TShock.";
+    $("tClave").disabled = ts; $("tClave").placeholder = ts ? "en TShock se pone en tshock/config.json" : "";
+  }
+  cargarVersiones(t[0]); resumen();
+}
+async function cargarVersiones(tipo) {
+  const s = $("selVersion"); s.innerHTML = "<option>Cargando versiones…</option>"; s.disabled = true;
+  if (!versiones[tipo]) { try { const r = await api("versiones", null, "&tipo=" + tipo); versiones[tipo] = r.lista; } catch { versiones[tipo] = [{ v: "latest", label: "ÚLTIMA VERSIÓN" }]; } }
+  if (TIPOS[juego][sel("gTipo")][0] !== tipo) return;
+  s.innerHTML = versiones[tipo].map(v => `<option value="${esc(v.v)}">${esc(v.label)}</option>`).join(""); s.disabled = false;
+}
+function semillaAzar() {
+  const b = new Uint32Array(2); crypto.getRandomValues(b);
+  if (juego === "minecraft") { let n = (BigInt(b[0]) << 32n | BigInt(b[1])); if (n >= 1n << 63n) n -= 1n << 64n; $("tSemilla").value = (n || 1n).toString(); }
+  else $("tSemilla").value = (b[0] % 2147483646) + 1;
+  resumen();
+}
+function slotsMax() { if (activo("swSlots")) { sJug.set(+sJug.el.max); sJug.el.disabled = true; } else sJug.el.disabled = false; }
+function resumen() {
+  if (!sJug) return; const mc = juego === "minecraft", sem = $("tSemilla").value.trim() || "aleatoria", mundo = $("tMundo").value.replace(/[^A-Za-z0-9_-]/g, "");
+  $("resumen").textContent = mc
+    ? `MUNDO      ${mundo}\nMODO       ${MODO_MC[sel("gModo")][0]}\nDIFICULTAD ${sel("gModo") === 3 ? "DIFÍCIL (hardcore)" : DIF_MC[sel("gDifMc")][0]}\nTERRENO    ${TER[sel("gTer")][0]}\nSEMILLA    ${sem}`
+    : `MUNDO      ${mundo}\nTAMAÑO     ${TAM[sel("gTam")]}\nDIFICULTAD ${DIF[sel("gDif")][0]}\nMALDAD     ${MAL[sel("gMal")][0]}\nSEMILLA    ${sem}`;
+}
+async function crear() {
+  const mc = juego === "minecraft", mundo = $("tMundo").value.replace(/[^A-Za-z0-9_-]/g, "");
+  if (!mundo) return aviso("FALTA EL NOMBRE", "Ponle un nombre al mundo (solo letras y números).");
+  if (mc && !activo("swEula")) return aviso("EULA", "Para crear un servidor de Minecraft tienes que aceptar el EULA de Mojang (minecraft.net/eula).");
+  const semilla = $("tSemilla").value.replace(mc ? /[^A-Za-z0-9-]/g : /[^A-Za-z0-9 ._|-]/g, "").trim();
+  const d = { juego, tipo: TIPOS[juego][sel("gTipo")][0], version: $("selVersion").value || "latest", nombre: $("tNombre").value.trim(), mundo, semilla,
+    jugadores: sJug.get(), ram: sRam.get() * 512, disco: sDisco.get() * 1024, backups: activo("swBackup"), api: activo("swApi") };
+  if (mc) Object.assign(d, { modo: MODO_MC[sel("gModo")][1], dif_mc: DIF_MC[sel("gDifMc")][1], tipo_mundo: TER[sel("gTer")][1], pvp: activo("swPvp"), eula: true });
+  else Object.assign(d, { tamano: sel("gTam") + 1, dificultad: DIF[sel("gDif")][1], maldad: MAL[sel("gMal")][1], clave: $("tClave").value });
+  $("btnCrear").disabled = true; $("btnCrear").textContent = "CREANDO…";
+  try {
+    const r = await api("crear", d);
+    if (!r.ok) return aviso("ERROR", "No se pudo crear el servidor:\n" + (r.error || ""));
+    cerrar("veloCrear");
+    aviso("SERVIDOR CREADO", `${d.nombre} · puerto ${r.port} · versión ${r.version}\n\nAhora se descarga el juego y se genera el mundo (2-8 minutos). Míralo en la CONSOLA.` + (r.api_token ? `\n\nCLAVE API (guárdala, no se vuelve a mostrar):\n${r.api_token}` : ""));
+    refrescar();
+  } finally { $("btnCrear").disabled = false; $("btnCrear").textContent = "+ CREAR SERVIDOR"; }
+}
+
+// ------------------------------------------------------------ recursos de un servidor
+let sRam2, sDisco2;
+function abrirRecursos(s) {
+  recId = s.id; $("recSub").textContent = "// " + s.name.toUpperCase() + " :: " + (NOMBRE_TIPO[s.tipo] || s.egg); abrir("veloRec");
+  const maxRam = Math.max(4, Math.floor((sistema.ramMB || 8192) / 512)), maxDisco = Math.max(2, Math.floor((sistema.discoLibreMB || 10240) / 1024) - 5 + Math.ceil(s.disk / 1024));
+  sRam2 = slider("sRam2", 2, maxRam, Math.round(s.memory / 512), 2, v => $("vRam2").textContent = (v / 2).toFixed(1).replace(".", ",") + " GB");
+  sDisco2 = slider("sDisco2", 1, maxDisco, Math.ceil(s.disk / 1024), 1, v => $("vDisco2").textContent = v + " GB");
+}
+async function aplicarRecursos() {
+  const r = await api("recursos", { id: recId, ram: sRam2.get() * 512, disco: sDisco2.get() * 1024 });
+  cerrar("veloRec");
+  if (!r.ok) aviso("ERROR", "No se pudo aplicar:\n" + (r.error || "")); else { toast("RECURSOS APLICADOS", (sRam2.get() / 2) + " GB RAM · " + sDisco2.get() + " GB disco", "var(--green)"); refrescar(); }
+}
+
+document.addEventListener("keydown", e => { if (e.key === "Escape") document.querySelectorAll(".velo.on").forEach(v => { if (v.id !== "veloModo" || sistema.modo) v.classList.remove("on"); }); });
+refrescar(); setInterval(refrescar, 5000);
+
+// ------------------------------------------------------------ actualizaciones (GitHub)
+const REPO = "Thesknaep/ThesknaepHost";
+function masNueva(a, b) {
+  const x = String(a).split(".").map(Number), y = String(b).split(".").map(Number);
+  for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); }
+  return false;
+}
+async function buscarActualizacion() {
+  try {
+    const loc = await (await fetch("version.json", { cache: "no-store" })).json();
+    $("sub").textContent += " :: v" + loc.version;
+    const rem = await (await fetch(`https://raw.githubusercontent.com/${REPO}/main/web/version.json`, { cache: "no-store" })).json();
+    if (!masNueva(rem.version, loc.version)) return;
+    const av = $("avisoAct"); av.hidden = false; av.innerHTML = "";
+    const b = document.createElement("b"); b.textContent = `NUEVA VERSIÓN ${rem.version} (tienes la ${loc.version})`;
+    const n = document.createElement("div"); n.textContent = rem.notas || ""; n.style.margin = "6px 0";
+    const c = document.createElement("div");
+    c.append("Para actualizar, en una terminal dentro de la carpeta ThesknaepHost: ");
+    const code = document.createElement("code"); code.textContent = "git pull && sudo bash linux/instalar-linux.sh"; c.append(code);
+    c.append(" · Si la descargaste como archivo, baja la nueva desde GitHub y ejecuta el instalador. No borra tus servidores ni mundos.");
+    av.append(b, n, c);
+  } catch { /* sin internet: no pasa nada */ }
+}
+buscarActualizacion();
+</script>
+</body>
+</html>

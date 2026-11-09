@@ -1,0 +1,196 @@
+{
+  "soporte": "https://github.com/Thesknaep/ThesknaepHost/issues",
+  "secciones": [
+    {
+      "id": "uso",
+      "titulo": "MODO DE USO",
+      "items": [
+        {
+          "t": "1. Instalar (solo la primera vez)",
+          "d": "Windows: pulsa INSTALAR / REPARAR y acepta el permiso de administrador. Tarda 10-20 minutos. Si pide reiniciar el PC, reinicia y vuelve a pulsar INSTALAR / REPARAR. Linux: ejecuta  sudo bash linux/instalar-linux.sh  en una terminal."
+        },
+        {
+          "t": "2. Elegir el modo",
+          "d": "LOCAL: solo personas en tu misma red (mismo WiFi o cable). REMOTO: desde cualquier lugar, necesita Tailscale (gratis) en tu PC y en el de cada amigo."
+        },
+        {
+          "t": "3. Encender",
+          "d": "Pulsa INICIAR y espera a que SISTEMA diga EN LÍNEA. La primera vez puede tardar 1-2 minutos.",
+          "l": "En Linux todo arranca solo con el equipo. Abre ThesknaepHost desde el menú de aplicaciones (o con el comando thesknaephost) y revisa que SISTEMA esté en verde."
+        },
+        {
+          "t": "4. Crear un servidor",
+          "d": "Pulsa + CREAR SERVIDOR, elige el juego (Terraria o Minecraft), el tipo, la versión, el mundo, la RAM y el almacenamiento. Espera a que termine de instalarse: no apagues el PC ni la app mientras dice INSTALANDO.",
+          "l": "Pulsa + CREAR SERVIDOR, elige el juego, el tipo, la versión, el mundo, la RAM y el almacenamiento. Luego PRENDER en MIS SERVIDORES. No apagues el equipo mientras se instala (mira la CONSOLA)."
+        },
+        {
+          "t": "5. Invitar a tus amigos",
+          "d": "En ACCESO REMOTO (o en LOCAL, con la IP de SISTEMA) pulsa COPIAR y envíales la IP:puerto. Terraria: Multijugador → Unirse por IP. Minecraft Java: Multijugador → Agregar servidor.",
+          "l": "En MIS SERVIDORES pulsa COPIAR IP y envíales la dirección. Terraria: Multijugador → Unirse por IP. Minecraft Java: Multijugador → Agregar servidor."
+        },
+        {
+          "t": "6. Apagar bien",
+          "d": "Para cerrar todo, usa el icono junto al reloj → Salir y apagar todo. Así se guardan los mundos. La X de la ventana solo la esconde: los servidores siguen encendidos.",
+          "l": "Antes de apagar el equipo, pulsa APAGAR en cada servidor para que guarde el mundo."
+        }
+      ]
+    },
+    {
+      "id": "reglas",
+      "titulo": "REGLAS",
+      "items": [
+        {
+          "t": "No interrumpas una instalación",
+          "d": "Mientras un servidor dice INSTALANDO o el instalador está trabajando, no apagues el PC, no cierres Linux y no pulses DETENER. Una instalación cortada deja el servidor vacío (la app intenta repararlo sola al pulsar INICIAR)."
+        },
+        {
+          "t": "Apaga siempre desde la app",
+          "d": "Usa DETENER o Salir y apagar todo. Apagar el PC de golpe o cortar la luz puede perder el progreso del mundo desde el último guardado.",
+          "l": "Pulsa APAGAR en el servidor antes de apagar el equipo. Cortar la luz o apagar de golpe puede perder el progreso desde el último guardado."
+        },
+        {
+          "t": "Haz copias de tus mundos",
+          "d": "De vez en cuando abre el PANEL WEB → tu servidor → Files y descarga el mundo (Terraria: el archivo .wld; Minecraft: la carpeta world). Guárdalo en otro lugar."
+        },
+        {
+          "t": "Deja RAM para tu PC",
+          "d": "Puedes dar a los servidores casi toda la RAM, pero deja al menos 2-4 GB para Windows o Linux. Recomendado: Terraria 1-2 GB, tModLoader 2-4 GB, Minecraft 3-6 GB."
+        },
+        {
+          "t": "No compartas tu USUARIO Y CLAVE",
+          "d": "Es la llave del panel. Cambia la contraseña la primera vez que entres al PANEL WEB. A tus amigos solo dales la IP:puerto."
+        },
+        {
+          "t": "No abras puertos en el router si usas Tailscale",
+          "d": "No hace falta y expone tu PC a internet. Con el modo REMOTO tus amigos entran por la red privada de Tailscale."
+        },
+        {
+          "t": "Si mueves la carpeta, repara",
+          "d": "Si mueves la carpeta ThesknaepHost o la copias a otro PC, abre ThesknaepHost.bat y pulsa INSTALAR / REPARAR una vez.",
+          "l": "Si cambias de equipo, vuelve a ejecutar  sudo bash linux/instalar-linux.sh  en el nuevo."
+        },
+        {
+          "t": "Juegos originales",
+          "d": "Tú y tus amigos necesitan su propia copia de Terraria o Minecraft Java. En Minecraft hay que aceptar el EULA de Mojang."
+        }
+      ]
+    },
+    {
+      "id": "errores",
+      "titulo": "ERRORES Y SOLUCIONES",
+      "items": [
+        {
+          "s": "GENERAL",
+          "t": "El servidor se queda en INSTALANDO o el mundo no se crea",
+          "d": "Suele pasar si Linux se reinició durante la instalación. Pulsa DETENER y luego INICIAR: la app revisa los servidores vacíos y los vuelve a instalar. Si sigue igual, borra ese servidor y créalo de nuevo.",
+          "l": "Abre la CONSOLA del servidor para ver el error. Si la instalación se cortó (apagón, reinicio), borra ese servidor en el PANEL WEB y créalo de nuevo."
+        },
+        {
+          "s": "GENERAL",
+          "t": "El PANEL WEB no abre",
+          "d": "Primero pulsa INICIAR y espera a que SISTEMA diga EN LÍNEA. Luego pulsa ACTUALIZAR. Si no abre, pulsa INSTALAR / REPARAR.",
+          "l": "En una terminal: sudo systemctl restart nginx wings  y vuelve a abrir la página. Si sigue igual, ejecuta otra vez  sudo bash linux/instalar-linux.sh  (no borra tus servidores)."
+        },
+        {
+          "s": "GENERAL",
+          "t": "Mis amigos no pueden entrar",
+          "d": "Revisa: 1) el servidor está ENCENDIDO; 2) usan la IP:puerto exacta de COPIAR; 3) tienen la misma versión del juego que elegiste; 4) en modo REMOTO, tu amigo tiene Tailscale abierto y conectado a tu red (compártele tu PC desde ADMINISTRAR en Tailscale)."
+        },
+        {
+          "s": "GENERAL",
+          "t": "tModLoader: no puedo entrar o los mods no cargan",
+          "d": "Tus amigos deben entrar con tModLoader (gratis en Steam), no con Terraria normal, y con la misma versión del servidor."
+        },
+        {
+          "s": "GENERAL",
+          "t": "La maldad del mundo (corrupción / carmesí) salió distinta",
+          "d": "Solo TShock permite elegirla. En Vanilla y tModLoader sale al azar. Si quieres una concreta, crea el mundo en tu Terraria y súbelo con ARCHIVOS → SUBIR MUNDO (en Linux: PANEL WEB → tu servidor → Files → Upload)."
+        },
+        {
+          "s": "GENERAL",
+          "t": "La instalación falla descargando paquetes",
+          "d": "Puede ser tu internet o un servidor de Ubuntu lento. El instalador prueba otros servidores y reintenta solo. Si aun así falla, pulsa INSTALAR / REPARAR otra vez: sigue desde donde quedó.",
+          "l": "Puede ser tu internet o un servidor de Ubuntu lento. El instalador prueba otros servidores y reintenta solo. Si aun así falla, vuelve a ejecutar  sudo bash linux/instalar-linux.sh."
+        },
+        {
+          "s": "WINDOWS",
+          "t": "Aviso de MEMORIA: hay que reiniciar WSL",
+          "d": "Tus servidores piden más RAM de la que Linux tiene. Pulsa REINICIAR cuando nadie esté jugando: la app espera a que terminen las instalaciones, reinicia Linux (1 minuto) y repara lo que haga falta."
+        },
+        {
+          "s": "WINDOWS",
+          "t": "Windows dice que la app puede ser peligrosa / no abre",
+          "d": "Al descargar el ZIP de internet, Windows lo bloquea. Antes de descomprimir: clic derecho en el ZIP → Propiedades → marca Desbloquear → Aceptar. Si sale SmartScreen: Más información → Ejecutar de todas formas."
+        },
+        {
+          "s": "WINDOWS",
+          "t": "Error 0x80370102 o «la virtualización no está habilitada»",
+          "d": "Activa la virtualización en la BIOS/UEFI de tu PC (se llama Intel VT-x, Intel Virtualization Technology, AMD-V o SVM). Luego pulsa INSTALAR / REPARAR."
+        },
+        {
+          "s": "WINDOWS",
+          "t": "Pide reiniciar el PC",
+          "d": "Es normal la primera vez que se instala WSL. Reinicia y vuelve a pulsar INSTALAR / REPARAR."
+        },
+        {
+          "s": "WINDOWS",
+          "t": "Cerré la ventana y los servidores siguen encendidos",
+          "d": "Es a propósito: la app queda en el icono junto al reloj. Para apagar todo: clic derecho en el icono → Salir y apagar todo."
+        },
+        {
+          "s": "WINDOWS 10",
+          "t": "Necesito Windows 10 22H2",
+          "d": "ThesknaepHost necesita Windows 10 versión 22H2 o más nueva. Actualiza en Configuración → Windows Update."
+        },
+        {
+          "s": "WINDOWS 10",
+          "t": "Mis amigos no entran en Windows 10 (yo sí puedo)",
+          "d": "Windows 10 necesita un reenvío de puertos que crea el instalador. Pulsa INSTALAR / REPARAR una vez y después INICIAR. Si sigue fallando, envía el archivo puertos.log (ver SOPORTE)."
+        },
+        {
+          "s": "WINDOWS 10",
+          "t": "Antivirus o firewall bloquea la conexión",
+          "d": "Permite «ThesknaepHost» o los puertos 7777-7780 (Terraria) y 25565-25566 (Minecraft) en tu antivirus o en el Firewall de Windows."
+        },
+        {
+          "s": "LINUX",
+          "t": "«Se necesita Ubuntu 24.04»",
+          "d": "Solo funciona en Ubuntu 24.04 o distros basadas en él (Linux Mint 22, Pop!_OS 24.04, Zorin OS 18, Kubuntu/Xubuntu 24.04), con procesador Intel o AMD de 64 bits. No funciona en ARM ni Raspberry Pi."
+        },
+        {
+          "s": "LINUX",
+          "t": "«$'\\r': command not found» al ejecutar el instalador",
+          "d": "El archivo se guardó con saltos de línea de Windows. Arréglalo con:  sed -i 's/\\r$//' linux/*.sh  y vuelve a ejecutarlo."
+        },
+        {
+          "s": "LINUX",
+          "t": "Mis amigos en la misma red no entran",
+          "d": "Si usas otro firewall que no sea ufw, abre los puertos 7777-7780 y 25565-25566 (TCP y UDP)."
+        },
+        {
+          "s": "LINUX",
+          "t": "La interfaz no abre en el navegador",
+          "d": "Abre http://127.0.0.1:8090 en el mismo equipo (por seguridad no se puede abrir desde otro). Si no carga: sudo systemctl restart nginx"
+        }
+      ]
+    },
+    {
+      "id": "soporte",
+      "titulo": "SOPORTE",
+      "items": [
+        {
+          "t": "Estado de las pruebas",
+          "d": "Probado y funcionando en Windows 11. Windows 10 (22H2) y Linux están soportados, pero han tenido menos pruebas: pueden aparecer errores. Si te pasa algo, avísame y lo soluciono."
+        },
+        {
+          "t": "Cómo pedir ayuda",
+          "d": "Abre un reporte en GitHub (botón ABRIR SOPORTE) contando: tu sistema (Windows 10, Windows 11 o Linux y versión), qué hiciste, qué esperabas y qué pasó. Una foto del error ayuda mucho."
+        },
+        {
+          "t": "Archivos que ayudan",
+          "d": "Windows: instalar.log y puertos.log en la carpeta %LOCALAPPDATA%\\ThesknaepHost (botón ABRIR REGISTROS). Linux: el texto que mostró la terminal al instalar. No envíes credenciales.txt: tiene tus contraseñas."
+        }
+      ]
+    }
+  ]
+}

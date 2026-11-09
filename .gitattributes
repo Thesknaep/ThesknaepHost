@@ -1,0 +1,16 @@
+* text=auto
+
+# Linux: siempre con saltos de línea LF (si no, bash falla con $'\r')
+*.sh            text eol=lf
+*.php           text eol=lf
+web/*.html      text eol=lf
+web/*.json      text eol=lf
+LEEME-LINUX.md  text eol=lf
+
+# Windows: CRLF
+*.ps1  text eol=crlf
+*.bat  text eol=crlf
+*.cs   text eol=crlf
+
+*.ico  binary
+*.png  binary
